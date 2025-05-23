@@ -408,6 +408,12 @@
               mainVideo.muted = true;
               mainVideo.loop = true;
               mainVideo.controls = false;
+
+              setTimeout(() => {
+                mainVideo.play().catch(err => {
+                    console.warn('Autoplay failed:', err);
+                });
+              }, 5000);
           
               // Set source media (images/videos)
               const topImagesContainer = document.querySelector('.top-images');
