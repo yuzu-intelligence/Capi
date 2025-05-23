@@ -4,6 +4,7 @@
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       <title>Capi Video</title>
+      <link rel="icon" type="image/png" href="https://fi-keyframes-test.s3.us-east-2.amazonaws.com/generated-videos/capybaraProfile.png" />
       <!-- Swiper CSS -->
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
       <style>
@@ -151,8 +152,21 @@
          opacity: 0.7;
          }
          .caption {
-         font-size: 11px;
+         font-size: 10px;
          margin-top: 4px;
+         overflow: hidden;
+         display: -webkit-box;
+         -webkit-line-clamp: 3;
+         -webkit-box-orient: vertical;
+         text-overflow: ellipsis;
+         cursor: pointer;
+         transition: all 0.3s ease;
+         padding-right: 15px;
+         }
+         .caption.expanded {
+         -webkit-line-clamp: unset;
+         white-space: normal;
+         overflow: visible;
          }
          .bottom-nav-bar {
          display: flex;
@@ -240,7 +254,7 @@
                <div class="subtitle">Generated with <strong>ANIMATE ANYTHING</strong></div>
             </div>
          </div>
-         <div class="caption">having fun DJing, crowd dancing, lights moving</div>
+         <div class="caption"></div>
       </div>
       <!-- Swiper Modal Carousel -->
       <div id="carouselModal">
@@ -334,100 +348,119 @@
             });
       </script>
       <script>
-        function setupSwiper(mediaElements) {
-            const swiperWrapper = document.querySelector('.swiper-wrapper');
-            swiperWrapper.innerHTML = ''; // Clear any existing slides
-
-            mediaElements.forEach((item, index) => {
-                const slide = document.createElement('div');
-                slide.classList.add('swiper-slide');
-
-                if (item.tagName.toLowerCase() === 'img') {
-                    const slideImg = document.createElement('img');
-                    slideImg.src = item.src;
-                    slide.appendChild(slideImg);
-                } else if (item.tagName.toLowerCase() === 'video') {
-                    const slideVideo = document.createElement('video');
-                    slideVideo.src = item.src;
-                    slideVideo.controls = false;
-                    slideVideo.autoplay = true;
-                    slideVideo.muted = true;
-                    slideVideo.loop = true;
-                    slideVideo.style.objectFit = 'contain';
-                    slide.appendChild(slideVideo);
-                }
-
-                swiperWrapper.appendChild(slide);
-
-                item.addEventListener('click', () => {
-                    document.getElementById('carouselModal').style.display = 'flex';
-                    swiper.slideTo(index);
-                });
-            });
-
-            swiper = new Swiper('.swiper', {
-                loop: false,
-                centeredSlides: true,
-                slidesPerView: 'auto',
-                spaceBetween: 16,
-                parallax: true
-            });
-        }
-         function getDataFromURL() {
-             const params = new URLSearchParams(window.location.search);
-             const rawData = params.get('data');
-             try {
-                 return JSON.parse(decodeURIComponent(rawData));
-             } catch (e) {
-                 console.error("Invalid data in URL:", e);
-                 return null;
-             }
-         }
+         function setupSwiper(mediaElements) {
+             const swiperWrapper = document.querySelector('.swiper-wrapper');
+             swiperWrapper.innerHTML = ''; // Clear any existing slides
          
-         const data = getDataFromURL();
-         if (data) {
-             // Set main video
-             const mainVideo = document.querySelector('.video-area video');
-             mainVideo.src = data.video;
+             mediaElements.forEach((item, index) => {
+                 const slide = document.createElement('div');
+                 slide.classList.add('swiper-slide');
          
-             // Set source media (images/videos)
-             const topImagesContainer = document.querySelector('.top-images');
-             topImagesContainer.innerHTML = ''; // Clear existing
-         
-             const newMediaElements = [];
-             data.sourceImages.forEach(item => {
-                 let mediaEl;
-                 if (item.type === 'image') {
-                     mediaEl = document.createElement('img');
-                     mediaEl.src = item.url;
-                 } else if (item.type === 'video') {
-                     mediaEl = document.createElement('video');
-                     mediaEl.src = item.url;
-                     mediaEl.autoplay = true;
-                     mediaEl.muted = true;
-                     mediaEl.loop = true;
+                 if (item.tagName.toLowerCase() === 'img') {
+                     const slideImg = document.createElement('img');
+                     slideImg.src = item.src;
+                     slide.appendChild(slideImg);
+                 } else if (item.tagName.toLowerCase() === 'video') {
+                     const slideVideo = document.createElement('video');
+                     slideVideo.src = item.src;
+                     slideVideo.controls = false;
+                     slideVideo.autoplay = true;
+                     slideVideo.muted = true;
+                     slideVideo.loop = true;
+                     slideVideo.style.objectFit = 'contain';
+                     slide.appendChild(slideVideo);
                  }
          
-                 if (mediaEl) {
-                     mediaEl.style.width = '62px';
-                     mediaEl.style.height = '90px';
-                     mediaEl.style.borderRadius = '10px';
-                     mediaEl.style.marginRight = '8px';
-                     mediaEl.style.border = '1.5px solid white';
-                     mediaEl.style.objectFit = 'cover';
-                     mediaEl.style.cursor = 'pointer';
-                     topImagesContainer.appendChild(mediaEl);
-                     newMediaElements.push(mediaEl);
-                 }
+                 swiperWrapper.appendChild(slide);
+         
+                 item.addEventListener('click', () => {
+                     document.getElementById('carouselModal').style.display = 'flex';
+                     swiper.slideTo(index);
+                 });
              });
          
-             setupSwiper(newMediaElements);
-             // Update generation style text
-             document.querySelector('.subtitle').innerHTML = `Generated with <strong>${data.generationStyle}</strong>`;
-         
-             // Update user prompt as caption
-             document.querySelector('.caption').textContent = data.userPrompt;
+             swiper = new Swiper('.swiper', {
+                 loop: false,
+                 centeredSlides: true,
+                 slidesPerView: 'auto',
+                 spaceBetween: 16,
+                 parallax: true
+             });
          }
+          function getDataFromURL() {
+              const params = new URLSearchParams(window.location.search);
+              const rawData = params.get('data');
+              try {
+                  return JSON.parse(decodeURIComponent(rawData));
+              } catch (e) {
+                  console.error("Invalid data in URL:", e);
+                  return null;
+              }
+          }
+          
+          const data = getDataFromURL();
+          if (data) {
+              // Set main video
+              const mainVideo = document.querySelector('.video-area video');
+              mainVideo.src = data.video;
+          
+              // Set source media (images/videos)
+              const topImagesContainer = document.querySelector('.top-images');
+              topImagesContainer.innerHTML = ''; // Clear existing
+          
+              const newMediaElements = [];
+              data.sourceImages.forEach(item => {
+                  let mediaEl;
+                  if (item.type === 'image') {
+                      mediaEl = document.createElement('img');
+                      mediaEl.src = item.url;
+                  } else if (item.type === 'video') {
+                      mediaEl = document.createElement('video');
+                      mediaEl.src = item.url;
+                      mediaEl.autoplay = true;
+                      mediaEl.muted = true;
+                      mediaEl.loop = true;
+                  }
+          
+                  if (mediaEl) {
+                      mediaEl.style.width = '62px';
+                      mediaEl.style.height = '90px';
+                      mediaEl.style.borderRadius = '10px';
+                      mediaEl.style.marginRight = '8px';
+                      mediaEl.style.border = '1.5px solid white';
+                      mediaEl.style.objectFit = 'cover';
+                      mediaEl.style.cursor = 'pointer';
+                      topImagesContainer.appendChild(mediaEl);
+                      newMediaElements.push(mediaEl);
+                  }
+              });
+          
+              setupSwiper(newMediaElements);
+              // Update generation style text
+              const genStyle = data.generationStyle?.split('_').join(' ')
+              document.querySelector('.subtitle').innerHTML = `Generated with <strong>${genStyle}</strong>`;
+          
+              // Update user prompt as caption
+              document.querySelector('.caption').textContent = data.userPrompt;
+          }
+      </script>
+      <script>
+         const captionEl = document.querySelector('.caption');
+         
+         function collapseCaption() {
+             captionEl.classList.remove('expanded');
+         }
+         
+         captionEl.addEventListener('click', (e) => {
+             e.stopPropagation();
+             captionEl.classList.toggle('expanded');
+         });
+         
+         document.addEventListener('click', (e) => {
+             if (!captionEl.contains(e.target)) {
+             collapseCaption();
+             }
+         });
       </script>
    </body>
 </html>
