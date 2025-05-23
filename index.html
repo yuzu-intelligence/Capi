@@ -172,23 +172,22 @@
          font-weight: bold;
          }
          .right-icons {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            z-index: 10;
-            }
+         position: absolute;
+         right: 12px;
+         top: 50%;
+         transform: translateY(-50%);
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         gap: 20px;
+         z-index: 10;
+         }
       </style>
    </head>
    <body>
       <div class="mobile-screen">
          <div class="top-images">
-            <img src="https://fi-keyframes-test.s3.us-east-2.amazonaws.com/generated-videos/capybaraProfile.png" alt="Source Image" />
-            <video src="https://fi-keyframes-test.s3.us-east-2.amazonaws.com/generated-videos/kelly_anime.mp4" alt="Source Image"  autoplay muted loop></video>
+            <img src="https://fi-keyframes-test.s3.us-east-2.amazonaws.com/generated-videos/image527.jpg" alt="Source Image" />
          </div>
          <div class="video-area">
             <video src="https://fi-keyframes-test.s3.us-east-2.amazonaws.com/generated-videos/kelly_anime.mp4" autoplay muted loop></video>
@@ -200,14 +199,14 @@
                   stroke="white"
                   stroke-width="2"
                   />
-            </svg>
-            <svg viewBox="0 0 33 30" width="28" height="28" fill="none">
+               </svg>
+               <svg viewBox="0 0 33 30" width="28" height="28" fill="none">
                <path
                   d="M17.498 1C17.6621 1.00002 17.8226 1.03405 17.9697 1.09766L18.1123 1.1709C18.2489 1.25389 18.3635 1.36266 18.4512 1.48828L18.5303 1.61914L22.1572 8.79688L22.3926 9.2627L22.9092 9.33594L31.0195 10.4883L31.0205 10.4893C31.2367 10.5197 31.4375 10.6082 31.6006 10.7422C31.7635 10.876 31.8825 11.049 31.9463 11.2402C32.01 11.4313 32.0168 11.6355 31.9678 11.8301C31.931 11.9759 31.8631 12.1137 31.7676 12.2344L31.6631 12.3496L25.792 17.9365L25.4033 18.3057L25.4961 18.834L26.8818 26.7217V26.7227C26.9164 26.9195 26.894 27.1221 26.8164 27.3086C26.7386 27.4956 26.6076 27.6614 26.4346 27.7842C26.2614 27.9071 26.054 27.9817 25.8359 27.9971C25.6724 28.0086 25.5093 27.9859 25.3574 27.9326L25.209 27.8691L17.9551 24.1436L17.498 23.9082L17.041 24.1436L9.78613 27.8691C9.59509 27.9672 9.37823 28.0124 9.16016 27.9971C8.94208 27.9817 8.73474 27.907 8.56152 27.7842C8.38848 27.6614 8.25653 27.4956 8.17871 27.3086C8.1206 27.1688 8.09396 27.0198 8.09863 26.8711L8.11426 26.7227V26.7217L9.49707 18.833L9.58984 18.3057L9.20215 17.9365L3.33594 12.3477C3.22272 12.2394 3.13612 12.111 3.0791 11.9717L3.03223 11.8291C2.99557 11.6835 2.99002 11.5325 3.0166 11.3857L3.05371 11.2402C3.10146 11.0969 3.18029 10.9638 3.28516 10.8496L3.39844 10.7422C3.5611 10.6083 3.76177 10.5191 3.97754 10.4883L3.97656 10.4873L12.085 9.33594L12.6006 9.2627L12.8359 8.79688L16.4658 1.61914C16.5347 1.48284 16.6331 1.36092 16.7549 1.26172L16.8838 1.1709C17.0206 1.08784 17.1744 1.0328 17.335 1.01074L17.498 1Z"
                   stroke="white"
                   stroke-width="2.5"
                   />
-            </svg> -->
+               </svg> -->
             <svg id="downloadBtn" viewBox="0 0 36 30" width="28" height="28" fill="none">
                <path
                   d="M4 23.8824V26.9412C4 27.7524 4.35558 28.5305 4.98851 29.1041C5.62145 29.6777 6.47989 30 7.375 30H27.625C28.5201 30 29.3785 29.6777 30.0115 29.1041C30.6444 28.5305 31 27.7524 31 26.9412V23.8824M9.0625 14.7059L17.5 22.3529M17.5 22.3529L25.9375 14.7059M17.5 22.3529V4"
@@ -284,8 +283,8 @@
              swiperWrapper.appendChild(slide);
          
              item.addEventListener('click', () => {
-             modal.style.display = 'flex';
-             swiper.slideTo(index);
+                modal.style.display = 'flex';
+                swiper.slideTo(index);
              });
          });
          
@@ -310,11 +309,11 @@
              document.querySelectorAll('#carouselModal video').forEach(video => video.pause());
          }
          });
-
+         
          document.getElementById("downloadBtn").addEventListener("click", () => {
             const video = document.querySelector(".video-area video");
             if (!video) return;
-
+         
             const a = document.createElement("a");
                 a.href = video.src;
                 a.download = "capi-video.mp4";
@@ -322,7 +321,7 @@
                 a.click();
                 document.body.removeChild(a);
             });
-
+         
             document.getElementById("shareBtn").addEventListener("click", async () => {
                 try {
                     await navigator.share({
@@ -335,58 +334,100 @@
             });
       </script>
       <script>
-        function getDataFromURL() {
-            const params = new URLSearchParams(window.location.search);
-            const rawData = params.get('data');
-            try {
-                return JSON.parse(decodeURIComponent(rawData));
-            } catch (e) {
-                console.error("Invalid data in URL:", e);
-                return null;
-            }
-        }
+        function setupSwiper(mediaElements) {
+            const swiperWrapper = document.querySelector('.swiper-wrapper');
+            swiperWrapper.innerHTML = ''; // Clear any existing slides
 
-        const data = getDataFromURL();
-        if (data) {
-            // Set main video
-            const mainVideo = document.querySelector('.video-area video');
-            mainVideo.src = data.video;
+            mediaElements.forEach((item, index) => {
+                const slide = document.createElement('div');
+                slide.classList.add('swiper-slide');
 
-            // Set source media (images/videos)
-            const topImagesContainer = document.querySelector('.top-images');
-            topImagesContainer.innerHTML = ''; // Clear existing
-
-            data.sourceImages.forEach(item => {
-                let mediaEl;
-                if (item.type === 'image') {
-                    mediaEl = document.createElement('img');
-                    mediaEl.src = item.url;
-                } else if (item.type === 'video') {
-                    mediaEl = document.createElement('video');
-                    mediaEl.src = item.url;
-                    mediaEl.autoplay = true;
-                    mediaEl.muted = true;
-                    mediaEl.loop = true;
+                if (item.tagName.toLowerCase() === 'img') {
+                    const slideImg = document.createElement('img');
+                    slideImg.src = item.src;
+                    slide.appendChild(slideImg);
+                } else if (item.tagName.toLowerCase() === 'video') {
+                    const slideVideo = document.createElement('video');
+                    slideVideo.src = item.src;
+                    slideVideo.controls = false;
+                    slideVideo.autoplay = true;
+                    slideVideo.muted = true;
+                    slideVideo.loop = true;
+                    slideVideo.style.objectFit = 'contain';
+                    slide.appendChild(slideVideo);
                 }
 
-                if (mediaEl) {
-                    mediaEl.style.width = '62px';
-                    mediaEl.style.height = '90px';
-                    mediaEl.style.borderRadius = '10px';
-                    mediaEl.style.marginRight = '8px';
-                    mediaEl.style.border = '1.5px solid white';
-                    mediaEl.style.objectFit = 'cover';
-                    mediaEl.style.cursor = 'pointer';
-                    topImagesContainer.appendChild(mediaEl);
-                }
+                swiperWrapper.appendChild(slide);
+
+                item.addEventListener('click', () => {
+                    document.getElementById('carouselModal').style.display = 'flex';
+                    swiper.slideTo(index);
+                });
             });
 
-            // Update generation style text
-            document.querySelector('.subtitle').innerHTML = `Generated with <strong>${data.generationStyle}</strong>`;
-
-            // Update user prompt as caption
-            document.querySelector('.caption').textContent = data.userPrompt;
+            swiper = new Swiper('.swiper', {
+                loop: false,
+                centeredSlides: true,
+                slidesPerView: 'auto',
+                spaceBetween: 16,
+                parallax: true
+            });
         }
-        </script>
+         function getDataFromURL() {
+             const params = new URLSearchParams(window.location.search);
+             const rawData = params.get('data');
+             try {
+                 return JSON.parse(decodeURIComponent(rawData));
+             } catch (e) {
+                 console.error("Invalid data in URL:", e);
+                 return null;
+             }
+         }
+         
+         const data = getDataFromURL();
+         if (data) {
+             // Set main video
+             const mainVideo = document.querySelector('.video-area video');
+             mainVideo.src = data.video;
+         
+             // Set source media (images/videos)
+             const topImagesContainer = document.querySelector('.top-images');
+             topImagesContainer.innerHTML = ''; // Clear existing
+         
+             const newMediaElements = [];
+             data.sourceImages.forEach(item => {
+                 let mediaEl;
+                 if (item.type === 'image') {
+                     mediaEl = document.createElement('img');
+                     mediaEl.src = item.url;
+                 } else if (item.type === 'video') {
+                     mediaEl = document.createElement('video');
+                     mediaEl.src = item.url;
+                     mediaEl.autoplay = true;
+                     mediaEl.muted = true;
+                     mediaEl.loop = true;
+                 }
+         
+                 if (mediaEl) {
+                     mediaEl.style.width = '62px';
+                     mediaEl.style.height = '90px';
+                     mediaEl.style.borderRadius = '10px';
+                     mediaEl.style.marginRight = '8px';
+                     mediaEl.style.border = '1.5px solid white';
+                     mediaEl.style.objectFit = 'cover';
+                     mediaEl.style.cursor = 'pointer';
+                     topImagesContainer.appendChild(mediaEl);
+                     newMediaElements.push(mediaEl);
+                 }
+             });
+         
+             setupSwiper(newMediaElements);
+             // Update generation style text
+             document.querySelector('.subtitle').innerHTML = `Generated with <strong>${data.generationStyle}</strong>`;
+         
+             // Update user prompt as caption
+             document.querySelector('.caption').textContent = data.userPrompt;
+         }
+      </script>
    </body>
 </html>
