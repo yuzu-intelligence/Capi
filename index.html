@@ -187,8 +187,8 @@
    <body>
       <div class="mobile-screen">
          <div class="top-images">
-            <img src="https://fi-keyframes-test.s3.us-east-2.amazonaws.com/generated-videos/image527.jpg" alt="Source Image" />
-            <video src="https://fi-keyframes-test.s3.us-east-2.amazonaws.com/generated-videos/orig.mp4" alt="Source Image"  autoplay muted loop></video>
+            <img src="https://fi-keyframes-test.s3.us-east-2.amazonaws.com/generated-videos/capybaraProfile.png" alt="Source Image" />
+            <video src="https://fi-keyframes-test.s3.us-east-2.amazonaws.com/generated-videos/kelly_anime.mp4" alt="Source Image"  autoplay muted loop></video>
          </div>
          <div class="video-area">
             <video src="https://fi-keyframes-test.s3.us-east-2.amazonaws.com/generated-videos/kelly_anime.mp4" autoplay muted loop></video>
@@ -334,5 +334,59 @@
                 }
             });
       </script>
+      <script>
+        function getDataFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            const rawData = params.get('data');
+            try {
+                return JSON.parse(decodeURIComponent(rawData));
+            } catch (e) {
+                console.error("Invalid data in URL:", e);
+                return null;
+            }
+        }
+
+        const data = getDataFromURL();
+        if (data) {
+            // Set main video
+            const mainVideo = document.querySelector('.video-area video');
+            mainVideo.src = data.video;
+
+            // Set source media (images/videos)
+            const topImagesContainer = document.querySelector('.top-images');
+            topImagesContainer.innerHTML = ''; // Clear existing
+
+            data.sourceImages.forEach(item => {
+                let mediaEl;
+                if (item.type === 'image') {
+                    mediaEl = document.createElement('img');
+                    mediaEl.src = item.url;
+                } else if (item.type === 'video') {
+                    mediaEl = document.createElement('video');
+                    mediaEl.src = item.url;
+                    mediaEl.autoplay = true;
+                    mediaEl.muted = true;
+                    mediaEl.loop = true;
+                }
+
+                if (mediaEl) {
+                    mediaEl.style.width = '62px';
+                    mediaEl.style.height = '90px';
+                    mediaEl.style.borderRadius = '10px';
+                    mediaEl.style.marginRight = '8px';
+                    mediaEl.style.border = '1.5px solid white';
+                    mediaEl.style.objectFit = 'cover';
+                    mediaEl.style.cursor = 'pointer';
+                    topImagesContainer.appendChild(mediaEl);
+                }
+            });
+
+            // Update generation style text
+            document.querySelector('.subtitle').innerHTML = `Generated with <strong>${data.generationStyle}</strong>`;
+
+            // Update user prompt as caption
+            document.querySelector('.caption').textContent = data.userPrompt;
+        }
+        </script>
    </body>
 </html>
