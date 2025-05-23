@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <title>Capi Video</title>
+      <!-- Swiper CSS -->
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+      <style>
+         body {
+         margin: 0;
+         font-family: sans-serif;
+         background: #000;
+         color: white;
+         }
+         .mobile-screen {
+         position: relative;
+         width: 100%;
+         max-width: 400px;
+         margin: auto;
+         height: 100vh;
+         background: #111;
+         overflow: hidden;
+         }
+         .top-bar {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         padding: 10px;
+         position: absolute;
+         top: 0;
+         width: 100%;
+         z-index: 10;
+         }
+         .top-images {
+         display: flex;
+         position: absolute;
+         top: 40px;
+         left: 10px;
+         z-index: 10;
+         }
+         .top-images img,
+         .top-images video {
+         width: 62px;
+         height: 90px;
+         border-radius: 10px;
+         margin-right: 8px;
+         border: 1.5px solid white;
+         object-fit: cover;
+         cursor: pointer;
+         }
+         .video-area {
+         width: 100%;
+         height: 100%;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         }
+         .video-area video {
+         width: 100%;
+         height: 100%;
+         object-fit: contain;
+         background: black;
+         }
+         .bottom-nav {
+         position: absolute;
+         bottom: 0;
+         width: 100%;
+         display: flex;
+         justify-content: space-around;
+         align-items: center;
+         padding: 10px 0;
+         z-index: 10;
+         }
+         .bottom-nav button {
+         background: none;
+         border: none;
+         color: white;
+         font-size: 16px;
+         }
+         #carouselModal {
+         display: none;
+         position: fixed;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100vh;
+         background: rgba(0, 0, 0, 0);
+         z-index: 9999;
+         justify-content: center;
+         align-items: center;
+         flex-direction: column;
+         }
+         #closeModal {
+         position: absolute;
+         top: 20px;
+         right: 30px;
+         font-size: 30px;
+         cursor: pointer;
+         color: white;
+         z-index: 10;
+         }
+         .swiper {
+         width: 100%;
+         max-width: 90%;
+         height: 80%;
+         }
+         .swiper-slide {
+         display: flex;
+         width: 85% !important; /* or a fixed value like 300px */
+         max-width: 80%;        /* ensures it never overflows modal width */
+         box-sizing: border-box;
+         justify-content: center;
+         align-items: center;
+         padding: 10px; /* Optional spacing inside each slide */
+         }
+         .swiper-slide img, .swiper-slide video {
+         max-width: 100%;
+         max-height: 100%;
+         border: 1.5px solid white;
+         border-radius: 10px;
+         object-fit: contain;
+         }
+         .bottom-section {
+         position: absolute;
+         bottom: 50px;
+         width: 100%;
+         background: black;
+         padding: 10px 16px;
+         box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.7);
+         color: white;
+         }
+         .profile {
+         display: flex;
+         align-items: center;
+         margin-bottom: 10px;
+         }
+         .avatar {
+         width: 38px;
+         height: 38px;
+         border-radius: 50%;
+         margin-right: 12px;
+         object-fit: cover;
+         }
+         .username {
+         font-weight: bold;
+         font-size: 14px;
+         }
+         .subtitle {
+         font-size: 10px;
+         opacity: 0.7;
+         }
+         .caption {
+         font-size: 11px;
+         margin-top: 4px;
+         }
+         .bottom-nav-bar {
+         display: flex;
+         justify-content: space-around;
+         border-top: 1px solid #444;
+         padding-top: 8px;
+         }
+         .bottom-nav-bar button {
+         background: none;
+         border: none;
+         color: white;
+         font-size: 14px;
+         opacity: 0.8;
+         }
+         .bottom-nav-bar button.active {
+         color: #ff44cc;
+         font-weight: bold;
+         }
+         .right-icons {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            z-index: 10;
+            }
+      </style>
+   </head>
+   <body>
+      <div class="mobile-screen">
+         <div class="top-images">
+            <img src="https://fi-keyframes-test.s3.us-east-2.amazonaws.com/generated-videos/image527.jpg" alt="Source Image" />
+            <video src="https://fi-keyframes-test.s3.us-east-2.amazonaws.com/generated-videos/orig.mp4" alt="Source Image"  autoplay muted loop></video>
+         </div>
+         <div class="video-area">
+            <video src="https://fi-keyframes-test.s3.us-east-2.amazonaws.com/generated-videos/kelly_anime.mp4" autoplay muted loop></video>
+         </div>
+         <div class="right-icons">
+            <!-- <svg viewBox="0 0 28 26" width="28" height="26" fill="none">
+               <path
+                  d="M20.2998 1C24.0494 1 27 3.95691 27 7.79297C27 10.1389 25.9631 12.3501 23.9404 14.8545C22.4149 16.7434 20.3866 18.7309 17.9385 21.0098L15.3535 23.3926L15.3525 23.3945L14 24.6396L12.6475 23.3945L12.6465 23.3926L10.0615 21.0098C7.61344 18.7309 5.5851 16.7434 4.05957 14.8545C2.03693 12.3501 1.00002 10.1389 1 7.79297C1 3.95691 3.95057 1 7.7002 1C9.82929 1.00006 11.8928 2.00833 13.2373 3.59375L14 4.49316L14.7627 3.59375C16.1072 2.00833 18.1707 1.00006 20.2998 1Z"
+                  stroke="white"
+                  stroke-width="2"
+                  />
+            </svg>
+            <svg viewBox="0 0 33 30" width="28" height="28" fill="none">
+               <path
+                  d="M17.498 1C17.6621 1.00002 17.8226 1.03405 17.9697 1.09766L18.1123 1.1709C18.2489 1.25389 18.3635 1.36266 18.4512 1.48828L18.5303 1.61914L22.1572 8.79688L22.3926 9.2627L22.9092 9.33594L31.0195 10.4883L31.0205 10.4893C31.2367 10.5197 31.4375 10.6082 31.6006 10.7422C31.7635 10.876 31.8825 11.049 31.9463 11.2402C32.01 11.4313 32.0168 11.6355 31.9678 11.8301C31.931 11.9759 31.8631 12.1137 31.7676 12.2344L31.6631 12.3496L25.792 17.9365L25.4033 18.3057L25.4961 18.834L26.8818 26.7217V26.7227C26.9164 26.9195 26.894 27.1221 26.8164 27.3086C26.7386 27.4956 26.6076 27.6614 26.4346 27.7842C26.2614 27.9071 26.054 27.9817 25.8359 27.9971C25.6724 28.0086 25.5093 27.9859 25.3574 27.9326L25.209 27.8691L17.9551 24.1436L17.498 23.9082L17.041 24.1436L9.78613 27.8691C9.59509 27.9672 9.37823 28.0124 9.16016 27.9971C8.94208 27.9817 8.73474 27.907 8.56152 27.7842C8.38848 27.6614 8.25653 27.4956 8.17871 27.3086C8.1206 27.1688 8.09396 27.0198 8.09863 26.8711L8.11426 26.7227V26.7217L9.49707 18.833L9.58984 18.3057L9.20215 17.9365L3.33594 12.3477C3.22272 12.2394 3.13612 12.111 3.0791 11.9717L3.03223 11.8291C2.99557 11.6835 2.99002 11.5325 3.0166 11.3857L3.05371 11.2402C3.10146 11.0969 3.18029 10.9638 3.28516 10.8496L3.39844 10.7422C3.5611 10.6083 3.76177 10.5191 3.97754 10.4883L3.97656 10.4873L12.085 9.33594L12.6006 9.2627L12.8359 8.79688L16.4658 1.61914C16.5347 1.48284 16.6331 1.36092 16.7549 1.26172L16.8838 1.1709C17.0206 1.08784 17.1744 1.0328 17.335 1.01074L17.498 1Z"
+                  stroke="white"
+                  stroke-width="2.5"
+                  />
+            </svg> -->
+            <svg id="downloadBtn" viewBox="0 0 36 30" width="28" height="28" fill="none">
+               <path
+                  d="M4 23.8824V26.9412C4 27.7524 4.35558 28.5305 4.98851 29.1041C5.62145 29.6777 6.47989 30 7.375 30H27.625C28.5201 30 29.3785 29.6777 30.0115 29.1041C30.6444 28.5305 31 27.7524 31 26.9412V23.8824M9.0625 14.7059L17.5 22.3529M17.5 22.3529L25.9375 14.7059M17.5 22.3529V4"
+                  stroke="white"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  />
+            </svg>
+            <svg id="shareBtn" viewBox="0 0 29 29" fill="none" width="29" height="29" xmlns="http://www.w3.org/2000/svg">
+               <path
+                  d="M17.2793 11.7207L13.1118 15.8877M26.0144 2.04065C26.1462 1.99517 26.2881 1.98768 26.424 2.01905C26.5599 2.05042 26.6842 2.11938 26.7827 2.21804C26.8812 2.31671 26.95 2.4411 26.9812 2.577C27.0124 2.7129 27.0047 2.85483 26.959 2.98657L18.7296 26.5025C18.6803 26.6431 18.59 26.7656 18.4702 26.8542C18.3505 26.9428 18.2069 26.9934 18.058 26.9994C17.9092 27.0054 17.762 26.9665 17.6355 26.8878C17.509 26.8091 17.4091 26.6943 17.3487 26.5581L12.877 16.4989C12.8018 16.3316 12.6678 16.1977 12.5005 16.1225L2.44021 11.6498C2.30448 11.5892 2.19004 11.4893 2.11168 11.3631C2.03331 11.2368 1.99462 11.0899 2.0006 10.9414C2.00659 10.7929 2.05697 10.6496 2.14524 10.53C2.23351 10.4104 2.35561 10.32 2.49577 10.2705L26.0144 2.04065Z"
+                  stroke="white"
+                  stroke-width="2.3125"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  />
+            </svg>
+         </div>
+         <div class="bottom-nav">
+            <a href="https://www.first-intelligence.com/" target="_blank" rel="noopener noreferrer">
+            <button>Go to Website</button>
+            </a>
+         </div>
+      </div>
+      <div class="bottom-section">
+         <div class="profile">
+            <img src="https://fi-keyframes-test.s3.us-east-2.amazonaws.com/generated-videos/capybaraProfile.png" alt="Avatar" class="avatar" />
+            <div>
+               <div class="username">@capi-the-bara</div>
+               <div class="subtitle">Generated with <strong>ANIMATE ANYTHING</strong></div>
+            </div>
+         </div>
+         <div class="caption">having fun DJing, crowd dancing, lights moving</div>
+      </div>
+      <!-- Swiper Modal Carousel -->
+      <div id="carouselModal">
+         <span id="closeModal"></span>
+         <div class="swiper">
+            <div class="swiper-wrapper">
+               <!-- Slides will be injected via JS -->
+            </div>
+         </div>
+      </div>
+      <!-- Swiper JS -->
+      <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+      <script>
+         const mediaItems = Array.from(document.querySelectorAll('.top-images img, .top-images video'));
+         const modal = document.getElementById('carouselModal');
+         const closeModal = document.getElementById('closeModal');
+         const swiperWrapper = document.querySelector('.swiper-wrapper');
+         
+         let swiper;
+         
+         mediaItems.forEach((item, index) => {
+             const slide = document.createElement('div');
+             slide.classList.add('swiper-slide');
+         
+             if (item.tagName.toLowerCase() === 'img') {
+             const slideImg = document.createElement('img');
+             slideImg.src = item.src;
+             slide.appendChild(slideImg);
+             } else if (item.tagName.toLowerCase() === 'video') {
+                 const slideVideo = document.createElement('video');
+                 slideVideo.src = item.src;
+                 slideVideo.controls = false;
+                 slideVideo.autoplay = true;
+                 slideVideo.muted = true;
+                 slideVideo.loop = true;
+                 slideVideo.style.objectFit = 'contain';
+                 slide.appendChild(slideVideo);
+             }
+         
+             swiperWrapper.appendChild(slide);
+         
+             item.addEventListener('click', () => {
+             modal.style.display = 'flex';
+             swiper.slideTo(index);
+             });
+         });
+         
+         closeModal.addEventListener('click', () => {
+             modal.style.display = 'none';
+             // Pause all videos in modal
+             document.querySelectorAll('#carouselModal video').forEach(video => video.pause());
+         });
+         
+         swiper = new Swiper('.swiper', {
+             loop: false,
+            centeredSlides: true,
+            slidesPerView: 'auto',
+            spaceBetween: 16,
+            parallax: true
+         });
+         
+         modal.addEventListener('click', (e) => {
+         const tag = e.target.tagName.toLowerCase();
+         if (tag !== 'img' && tag !== 'video') {
+             modal.style.display = 'none';
+             document.querySelectorAll('#carouselModal video').forEach(video => video.pause());
+         }
+         });
+
+         document.getElementById("downloadBtn").addEventListener("click", () => {
+            const video = document.querySelector(".video-area video");
+            if (!video) return;
+
+            const a = document.createElement("a");
+                a.href = video.src;
+                a.download = "capi-video.mp4";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            });
+
+            document.getElementById("shareBtn").addEventListener("click", async () => {
+                try {
+                    await navigator.share({
+                    title: document.title,
+                    url: window.location.href,
+                    });
+                } catch (err) {
+                    console.error('Sharing failed:', err);
+                }
+            });
+      </script>
+   </body>
+</html>
