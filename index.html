@@ -213,7 +213,7 @@
             <img src="https://fi-keyframes-test.s3.us-east-2.amazonaws.com/generated-videos/image527.jpg" alt="Source Image" />
          </div>
          <div class="video-area">
-            <video src="https://fi-keyframes-test.s3.us-east-2.amazonaws.com/generated-videos/kelly_anime.mp4" autoplay muted loop></video>
+            <video src="https://fi-keyframes-test.s3.us-east-2.amazonaws.com/generated-videos/kelly_anime.mp4" muted loop autoplay></video>
          </div>
          <div class="right-icons">
             <!-- <svg viewBox="0 0 28 26" width="28" height="26" fill="none">
@@ -295,9 +295,9 @@
              } else if (item.tagName.toLowerCase() === 'video') {
                  const slideVideo = document.createElement('video');
                  slideVideo.src = item.src;
+                 slideVideo.muted = true;
                  slideVideo.controls = false;
                  slideVideo.autoplay = true;
-                 slideVideo.muted = true;
                  slideVideo.loop = true;
                  slideVideo.style.objectFit = 'contain';
                  slide.appendChild(slideVideo);
@@ -365,9 +365,9 @@
                      const slideVideo = document.createElement('video');
                      slideVideo.src = item.src;
                      slideVideo.controls = false;
-                     slideVideo.autoplay = true;
                      slideVideo.muted = true;
                      slideVideo.loop = true;
+                     slideVideo.autoplay = true;
                      slideVideo.style.objectFit = 'contain';
                      slide.appendChild(slideVideo);
                  }
@@ -404,16 +404,16 @@
               // Set main video
               const mainVideo = document.querySelector('.video-area video');
               mainVideo.src = data.video;
-              mainVideo.autoplay = true;
               mainVideo.muted = true;
               mainVideo.loop = true;
               mainVideo.controls = false;
+              mainVideo.autoplay = true;
 
               setTimeout(() => {
                 mainVideo.play().catch(err => {
                     console.warn('Autoplay failed:', err);
                 });
-              }, 5000);
+              }, 6000);
           
               // Set source media (images/videos)
               const topImagesContainer = document.querySelector('.top-images');
