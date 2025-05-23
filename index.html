@@ -403,17 +403,16 @@
           if (data) {
               // Set main video
               const mainVideo = document.querySelector('.video-area video');
-              mainVideo.src = data.video;
-              mainVideo.muted = true;
-              mainVideo.loop = true;
-              mainVideo.controls = false;
-              mainVideo.autoplay = true;
-
-              setTimeout(() => {
+              mainVideo.setAttribute('playsinline', 'true');
+                mainVideo.muted = true;
+                mainVideo.autoplay = true;
+                mainVideo.loop = true;
+                mainVideo.controls = false;
+                mainVideo.src = data.video;
+                mainVideo.load();
                 mainVideo.play().catch(err => {
                     console.warn('Autoplay failed:', err);
                 });
-              }, 6000);
           
               // Set source media (images/videos)
               const topImagesContainer = document.querySelector('.top-images');
@@ -427,11 +426,15 @@
                       mediaEl.src = item.url;
                   } else if (item.type === 'video') {
                       mediaEl = document.createElement('video');
-                      mediaEl.src = item.url;
-                      mediaEl.autoplay = true;
                       mediaEl.muted = true;
                       mediaEl.loop = true;
                       mediaEl.controls = false;
+                      mediaEl.autoplay = true;
+                      mediaEl.src = item.url;
+                      mediaEl.load();
+                      mediaEl.play().catch(err => {
+                         console.warn('Autoplay failed:', err);
+                      });
                   }
           
                   if (mediaEl) {
