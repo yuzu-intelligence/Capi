@@ -404,6 +404,10 @@
               // Set main video
               const mainVideo = document.querySelector('.video-area video');
               mainVideo.src = data.video;
+              mainVideo.autoplay = true;
+              mainVideo.muted = true;
+              mainVideo.loop = true;
+              mainVideo.controls = false;
           
               // Set source media (images/videos)
               const topImagesContainer = document.querySelector('.top-images');
@@ -421,7 +425,7 @@
                       mediaEl.autoplay = true;
                       mediaEl.muted = true;
                       mediaEl.loop = true;
-                    mediaEl.controls = false;
+                      mediaEl.controls = false;
                   }
           
                   if (mediaEl) {
