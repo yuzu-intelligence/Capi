@@ -113,7 +113,7 @@
          box-sizing: border-box;
          justify-content: center;
          align-items: center;
-         padding: 10px; /* Optional spacing inside each slide */
+         padding: 0px; /* Optional spacing inside each slide */
          }
          .swiper-slide img, .swiper-slide video {
          max-width: 100%;
@@ -196,6 +196,15 @@
          gap: 20px;
          z-index: 10;
          }
+         .swiper-slide-prev {
+            transform: translateX(40px) translateZ(0) !important;
+         }
+         .swiper-slide-next {
+            transform: translateX(-40px) translateZ(0)  !important;
+         }
+         .swiper-slide-active {
+            z-index: 10;
+         }
       </style>
    </head>
    <body>
@@ -242,7 +251,7 @@
          </div>
          <div class="bottom-nav">
             <a href="https://www.first-intelligence.com/" target="_blank" rel="noopener noreferrer">
-            <button>Go to Website</button>
+            <button>Open Website</button>
             </a>
          </div>
       </div>
@@ -306,14 +315,6 @@
              modal.style.display = 'none';
              // Pause all videos in modal
              document.querySelectorAll('#carouselModal video').forEach(video => video.pause());
-         });
-         
-         swiper = new Swiper('.swiper', {
-             loop: false,
-            centeredSlides: true,
-            slidesPerView: 'auto',
-            spaceBetween: 16,
-            parallax: true
          });
          
          modal.addEventListener('click', (e) => {
@@ -420,6 +421,7 @@
                       mediaEl.autoplay = true;
                       mediaEl.muted = true;
                       mediaEl.loop = true;
+                    mediaEl.controls = false;
                   }
           
                   if (mediaEl) {
@@ -435,7 +437,7 @@
                   }
               });
           
-            //   setupSwiper(newMediaElements);
+              setupSwiper(newMediaElements);
               // Update generation style text
               const genStyle = data.generationStyle?.split('_').join(' ')
               document.querySelector('.subtitle').innerHTML = `Generated with <strong>${genStyle}</strong>`;
