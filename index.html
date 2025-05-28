@@ -333,28 +333,28 @@
          }
          });
          
-         document.getElementById("downloadBtn").addEventListener("click", () => {
-            const video = document.querySelector(".video-area video");
-            if (!video) return;
+         // document.getElementById("downloadBtn").addEventListener("click", () => {
+         //    const video = document.querySelector(".video-area video");
+         //    if (!video) return;
          
-            const a = document.createElement("a");
-                a.href = video.src;
-                a.download = "capi-video.mp4";
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            });
+         //    const a = document.createElement("a");
+         //        a.href = video.src;
+         //        a.download = "capi-video.mp4";
+         //        document.body.appendChild(a);
+         //        a.click();
+         //        document.body.removeChild(a);
+         //    });
          
-            document.getElementById("shareBtn").addEventListener("click", async () => {
-                try {
-                    await navigator.share({
-                    title: document.title,
-                    url: window.location.href,
-                    });
-                } catch (err) {
-                    console.error('Sharing failed:', err);
-                }
-            });
+         //    document.getElementById("shareBtn").addEventListener("click", async () => {
+         //        try {
+         //            await navigator.share({
+         //            title: document.title,
+         //            url: window.location.href,
+         //            });
+         //        } catch (err) {
+         //            console.error('Sharing failed:', err);
+         //        }
+         //    });
       </script>
       <script>
          const constants = {GENERATE_STYLE: {
@@ -368,7 +368,6 @@
             }}
          
          function parseItemsNew(remixItem) {
-            console.log(`INFO::parseFixedFeedItems::options:: ${JSON.stringify(remixItem)}`);
          
             let workflow_type = remixItem.workflow_type;
             let generationStyle = constants.GENERATE_STYLE.ANIMATE_ANYTHING;
@@ -391,7 +390,7 @@
             if (generationStyle === constants.GENERATE_STYLE.TRY_ON) {
                sourceImages = sourceImages.sort((a, b) => {
                   const order = { model_image: 0, item_to_try_on: 1 };
-                  return (order[a.purpose] || 99) - (order[b.purpose] || 99);
+                  return order[a.purpose] - order[b.purpose];
                });
             }
          
