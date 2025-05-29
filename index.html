@@ -238,7 +238,7 @@
                   stroke-width="2.5"
                   />
                </svg> -->
-            <!-- <svg id="downloadBtn" viewBox="0 0 36 30" width="28" height="28" fill="none">
+            <svg id="downloadBtn" viewBox="0 0 36 30" width="28" height="28" fill="none">
                <path
                   d="M4 23.8824V26.9412C4 27.7524 4.35558 28.5305 4.98851 29.1041C5.62145 29.6777 6.47989 30 7.375 30H27.625C28.5201 30 29.3785 29.6777 30.0115 29.1041C30.6444 28.5305 31 27.7524 31 26.9412V23.8824M9.0625 14.7059L17.5 22.3529M17.5 22.3529L25.9375 14.7059M17.5 22.3529V4"
                   stroke="white"
@@ -246,7 +246,7 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   />
-               </svg> -->
+               </svg>
             <svg id="shareBtn" viewBox="0 0 29 29" fill="none" width="29" height="29" xmlns="http://www.w3.org/2000/svg">
                <path
                   d="M17.2793 11.7207L13.1118 15.8877M26.0144 2.04065C26.1462 1.99517 26.2881 1.98768 26.424 2.01905C26.5599 2.05042 26.6842 2.11938 26.7827 2.21804C26.8812 2.31671 26.95 2.4411 26.9812 2.577C27.0124 2.7129 27.0047 2.85483 26.959 2.98657L18.7296 26.5025C18.6803 26.6431 18.59 26.7656 18.4702 26.8542C18.3505 26.9428 18.2069 26.9934 18.058 26.9994C17.9092 27.0054 17.762 26.9665 17.6355 26.8878C17.509 26.8091 17.4091 26.6943 17.3487 26.5581L12.877 16.4989C12.8018 16.3316 12.6678 16.1977 12.5005 16.1225L2.44021 11.6498C2.30448 11.5892 2.19004 11.4893 2.11168 11.3631C2.03331 11.2368 1.99462 11.0899 2.0006 10.9414C2.00659 10.7929 2.05697 10.6496 2.14524 10.53C2.23351 10.4104 2.35561 10.32 2.49577 10.2705L26.0144 2.04065Z"
@@ -333,28 +333,28 @@
          }
          });
          
-         // document.getElementById("downloadBtn").addEventListener("click", () => {
-         //    const video = document.querySelector(".video-area video");
-         //    if (!video) return;
+         document.getElementById("downloadBtn").addEventListener("click", () => {
+            const video = document.querySelector(".video-area video");
+            if (!video) return;
          
-         //    const a = document.createElement("a");
-         //        a.href = video.src;
-         //        a.download = "capi-video.mp4";
-         //        document.body.appendChild(a);
-         //        a.click();
-         //        document.body.removeChild(a);
-         //    });
+            const a = document.createElement("a");
+                a.href = video.src;
+                a.download = "capi-video.mp4";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            });
          
-         //    document.getElementById("shareBtn").addEventListener("click", async () => {
-         //        try {
-         //            await navigator.share({
-         //            title: document.title,
-         //            url: window.location.href,
-         //            });
-         //        } catch (err) {
-         //            console.error('Sharing failed:', err);
-         //        }
-         //    });
+            document.getElementById("shareBtn").addEventListener("click", async () => {
+                try {
+                    await navigator.share({
+                    title: document.title,
+                    url: window.location.href,
+                    });
+                } catch (err) {
+                    console.error('Sharing failed:', err);
+                }
+            });
       </script>
       <script>
          const constants = {GENERATE_STYLE: {
