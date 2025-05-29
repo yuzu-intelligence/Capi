@@ -333,17 +333,39 @@
          }
          });
          
-         document.getElementById("downloadBtn").addEventListener("click", () => {
+         // document.getElementById("downloadBtn").addEventListener("click", () => {
+         //    const video = document.querySelector(".video-area video");
+         //    if (!video) return;
+         
+         //    const a = document.createElement("a");
+         //    a.href = video.src;
+         //    a.download = "capi-video.mp4";
+         //    document.body.appendChild(a);
+         //    a.click();
+         //    document.body.removeChild(a);
+         // });
+
+         document.getElementById("downloadBtn").addEventListener("click", async () => {
             const video = document.querySelector(".video-area video");
             if (!video) return;
-         
-            const a = document.createElement("a");
-                a.href = video.src;
-                a.download = "capi-video.mp4";
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            });
+
+            try {
+               const response = await fetch(video.src, { mode: 'cors' });
+               const blob = await response.blob();
+
+               const url = window.URL.createObjectURL(blob);
+               const a = document.createElement("a");
+               a.href = url;
+               a.download = "capi-video.mp4";
+               document.body.appendChild(a);
+               a.click();
+               document.body.removeChild(a);
+               window.URL.revokeObjectURL(url);
+            } catch (error) {
+               console.error("Failed to download video:", error);
+            }
+         });
+
          
             document.getElementById("shareBtn").addEventListener("click", async () => {
                 try {
