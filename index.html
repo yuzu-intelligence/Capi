@@ -366,22 +366,27 @@
 
             try {
                const response = await fetch(video.src, { mode: 'cors' });
-               const blob = await response.blob();
+               if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
+               const blob = await response.blob();
                const url = window.URL.createObjectURL(blob);
+
                const a = document.createElement("a");
                a.href = url;
                a.download = "capi-video.mp4";
                document.body.appendChild(a);
                a.click();
                document.body.removeChild(a);
+
                window.URL.revokeObjectURL(url);
             } catch (error) {
                console.error("Failed to download video:", error);
+               
+               // Fallback: Open the video in a new tab
+               window.open(video.src, "_blank");
             }
          });
 
-         
             document.getElementById("shareBtn").addEventListener("click", async () => {
                 try {
                     await navigator.share({
