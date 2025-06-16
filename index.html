@@ -610,10 +610,13 @@
                   return parseItemsNew(remixItem);
                } else {
                   const remixItem = json.data?.[0];
-                  return {...remixItem.draft_content, sourceImages: remixItem.draft_content.selectedMedia}
+                  if(remixItem) {
+                     return {...remixItem.draft_content, sourceImages: remixItem.draft_content.selectedMedia}
+                  }
+                  else {
+                     throw new Error("No remix item found");
+                  } 
                }
-               if (!remixItem) throw new Error("No remix item found");
-               
             } catch (e) {
                console.error("Error fetching shared data:", e);
                return null;
