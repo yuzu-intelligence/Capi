@@ -411,33 +411,129 @@
          
          function parseItemsNew(remixItem) {
          
+            if (remixItem.record_type === 'draft') {
+               // if the item is a draft just return the draft content
+               return {
+                  ...remixItem.draft_content,
+                  sourceImages: remixItem.draft_content.selectedMedia,
+                  created_at: remixItem.created_at,
+                  record_type: remixItem.record_type,
+               };
+            }
             let workflow_type = remixItem.workflow_type;
             let generationStyle = constants.GENERATE_STYLE.ANIMATE_ANYTHING;
-         
-            if (workflow_type?.system_name?.includes(constants.GENERATE_STYLE.INFINITE_CITY_WALK)) {
+            let genSpecificValues = {};
+            if (
+               workflow_type.system_name &&
+               workflow_type.system_name.includes(
+                  constants.GENERATE_STYLE.INFINITE_CITY_WALK,
+               )
+            ) {
                generationStyle = constants.GENERATE_STYLE.INFINITE_CITY_WALK;
-            } else if (workflow_type?.system_name?.includes(constants.GENERATE_STYLE.CARTOON_OF_ANYTHING)) {
+            } else if (
+               workflow_type.system_name &&
+               workflow_type.system_name.includes(
+                  constants.GENERATE_STYLE.CARTOON_OF_ANYTHING,
+               )
+            ) {
                generationStyle = constants.GENERATE_STYLE.CARTOON_OF_ANYTHING;
-            } else if (workflow_type?.system_name?.includes(constants.GENERATE_STYLE.TRY_ON)) {
+            } else if (
+               workflow_type.system_name &&
+               workflow_type.system_name.includes(constants.GENERATE_STYLE.TRY_ON)
+            ) {
                generationStyle = constants.GENERATE_STYLE.TRY_ON;
-            } else if (workflow_type?.system_name?.includes(constants.GENERATE_STYLE.MOMENTS_WITH_FRIENDS)) {
+            } else if (
+               workflow_type.system_name &&
+               workflow_type.system_name.includes(
+                  constants.GENERATE_STYLE.MOMENTS_WITH_FRIENDS,
+               )
+            ) {
                generationStyle = constants.GENERATE_STYLE.MOMENTS_WITH_FRIENDS;
-            } else if (workflow_type?.system_name?.includes('meme')) {
+            } else if (
+               workflow_type.system_name &&
+               workflow_type.system_name.toLowerCase().includes('meme')
+            ) {
                generationStyle = constants.GENERATE_STYLE.MEMEIFY;
+            } else if (
+               workflow_type.system_name &&
+               workflow_type.system_name.toLowerCase().includes('ppl')
+            ) {
+               genSpecificValues = {}; // to set scene prompt if available
+               generationStyle = constants.GENERATE_STYLE.PEOPLE_IN_SCENE;
+            } else if (
+               workflow_type.system_name &&
+               workflow_type.system_name.toLowerCase().includes('barbi')
+            ) {
+               generationStyle = constants.GENERATE_STYLE.BARBI_DOLL_STYLE;
+            } else if (
+               workflow_type.system_name &&
+               workflow_type.system_name.toLowerCase().includes('text_to')
+            ) {
+               generationStyle = constants.GENERATE_STYLE.TEXT_TO_VIDEO;
+            } else if (
+               workflow_type.system_name &&
+               workflow_type.system_name.toLowerCase().includes('style_change')
+            ) {
+               generationStyle = constants.GENERATE_STYLE.STYLE_CHANGING;
+            } else if (
+               workflow_type.system_name &&
+               workflow_type.system_name.includes(constants.GENERATE_STYLE.DRAW_TO_VIDEO)
+            ) {
+               generationStyle = constants.GENERATE_STYLE.DRAW_TO_VIDEO;
+            } else if (
+               workflow_type.system_name &&
+               workflow_type.system_name.toLowerCase().includes('subject')
+            ) {
+               generationStyle = constants.GENERATE_STYLE.CHANGE_SUBJECT;
             }
          
-            const record_id = remixItem.id || remixItem.record_id || remixItem.discover_id;
-         
-            let sourceImages = remixItem.inputs.media_items || [];
+            const record_id =
+               remixItem.id || remixItem.record_id || remixItem.discover_id;
+
+            let sourceImages = remixItem.inputs.media_items;
             if (generationStyle === constants.GENERATE_STYLE.TRY_ON) {
                sourceImages = sourceImages.sort((a, b) => {
-                  const order = { model_image: 0, item_to_try_on: 1 };
-                  return order[a.purpose] - order[b.purpose];
+                  const order = {
+                  model_image: 0,
+                  item_to_try_on: 1,
+                  };
+                  return (
+                  order[a.purpose] -
+                  order[b.purpose]
+                  );
+               });
+            } else if (generationStyle === constants.GENERATE_STYLE.MEMEIFY) {
+               sourceImages = sourceImages.sort((a, b) => {
+                  const order = {
+                  meme_template: 0,
+                  user_face: 1,
+                  };
+                  return (
+                  order[a.purpose] -
+                  order[b.purpose]
+                  );
+               });
+            } else if (generationStyle === constants.GENERATE_STYLE.PEOPLE_IN_SCENE) {
+               sourceImages = sourceImages.sort((a, b) => {
+                  const order = {
+                  scene_image: 0,
+                  subject_image: 1,
+                  };
+                  return (
+                  order[a.purpose] -
+                  order[b.purpose]
+                  );
                });
             }
          
-            const finalResultUri = (remixItem.media?.items || []).find(item => item.type === 'video')?.presigned_url || '';
-         
+            let media = remixItem.media;
+            let finalResultUri = '';
+            const finalMediaItems = media.items.filter(
+               (item) => item.type === 'video',
+            );
+            if (finalMediaItems.length) {
+               finalResultUri = finalMediaItems[0].presigned_url;
+            }
             return {
                ...remixItem,
                record_id,
