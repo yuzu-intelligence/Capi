@@ -605,9 +605,15 @@
                });
                if (!response.ok) throw new Error("Failed to fetch shared data");
                const json = await response.json();
-               const remixItem = json.data?.items?.[0] || json.data?.[0];
+               const remixItem = json.data?.items?.[0];
+               if(remixItem) {
+                  return parseItemsNew(remixItem);
+               } else {
+                  const remixItem = json.data?.[0];
+                  return {...remixItem.draft_content, sourceImages: remixItem.draft_content.selectedMedia}
+               }
                if (!remixItem) throw new Error("No remix item found");
-               return parseItemsNew(remixItem);
+               
             } catch (e) {
                console.error("Error fetching shared data:", e);
                return null;
