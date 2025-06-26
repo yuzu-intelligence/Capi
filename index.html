@@ -51,17 +51,21 @@
          cursor: pointer;
          }
          .video-area {
+         position: absolute;
+         top: 0;
+         left: 0;
          width: 100%;
          height: 100%;
          display: flex;
          justify-content: center;
          align-items: center;
+         z-index: 2; /* Make sure it's above background and blur */
+         pointer-events: none;
          }
          .video-area video {
          width: 100%;
          height: 100%;
          object-fit: contain;
-         background: black;
          }
          .bottom-nav {
          position: absolute;
@@ -126,9 +130,9 @@
          position: absolute;
          bottom: 50px;
          width: 100%;
-         background: black;
+         /* background: black; */
          padding: 10px 16px;
-         box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.7);
+         /* box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.7); */
          color: white;
          }
          .profile {
@@ -206,34 +210,66 @@
          z-index: 10;
          }
          @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+         0% { transform: rotate(0deg); }
+         100% { transform: rotate(360deg); }
          }
          .bottom-nav button {
-            background-color: transparent;
-            color: #ff44cc;
-            border: 2px solid #ff44cc;
-            padding: 8px 16px;
-            font-size: 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            }
-
-            .bottom-nav button:hover {
-            background-color: #ff44cc;
-            color: white;
-            }
+         background-color: transparent;
+         color: #ff44cc;
+         border: 2px solid #ff44cc;
+         padding: 8px 16px;
+         font-size: 16px;
+         border-radius: 20px;
+         cursor: pointer;
+         transition: all 0.3s ease;
+         }
+         .bottom-nav button:hover {
+         background-color: #ff44cc;
+         color: white;
+         }
+         .background-preview {
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         z-index: 0; /* ensure it's beneath the video-area */
+         overflow: hidden;
+         filter: blur(4px);
+         }
+         .background-preview img,
+         .background-preview video {
+         width: 100%;
+         height: 100%;
+         object-fit: cover;
+         position: absolute;
+         top: 0;
+         left: 0;
+         z-index: 0;
+         }
+         .blur-overlay {
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         backdrop-filter: blur(20px);
+         background-color: rgba(0, 0, 0, 0.3); /* dark blur */
+         z-index: 1;
+         }
       </style>
    </head>
    <body>
       <div id="loader" style="position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0,0,0,1); display: flex; justify-content: center; align-items: center; z-index: 99999;">
          <div style="border: 5px solid #fff; border-top: 5px solid #ff44cc; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite;"></div>
       </div>
-
       <div class="mobile-screen">
          <div class="top-images">
             <img src="https://fi-keyframes-test.s3.us-east-2.amazonaws.com/generated-videos/image527.jpg" alt="Source Image" />
+         </div>
+         <div class="background-preview">
+            <!-- JS will dynamically insert backdrop image or video here -->
+            <div class="blur-overlay"></div>
          </div>
          <div class="video-area">
             <video src="https://fi-keyframes-test.s3.us-east-2.amazonaws.com/generated-videos/kelly_anime.mp4" muted loop autoplay></video>
@@ -261,7 +297,7 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   />
-               </svg>
+            </svg>
             <svg id="shareBtn" viewBox="0 0 29 29" fill="none" width="29" height="29" xmlns="http://www.w3.org/2000/svg">
                <path
                   d="M17.2793 11.7207L13.1118 15.8877M26.0144 2.04065C26.1462 1.99517 26.2881 1.98768 26.424 2.01905C26.5599 2.05042 26.6842 2.11938 26.7827 2.21804C26.8812 2.31671 26.95 2.4411 26.9812 2.577C27.0124 2.7129 27.0047 2.85483 26.959 2.98657L18.7296 26.5025C18.6803 26.6431 18.59 26.7656 18.4702 26.8542C18.3505 26.9428 18.2069 26.9934 18.058 26.9994C17.9092 27.0054 17.762 26.9665 17.6355 26.8878C17.509 26.8091 17.4091 26.6943 17.3487 26.5581L12.877 16.4989C12.8018 16.3316 12.6678 16.1977 12.5005 16.1225L2.44021 11.6498C2.30448 11.5892 2.19004 11.4893 2.11168 11.3631C2.03331 11.2368 1.99462 11.0899 2.0006 10.9414C2.00659 10.7929 2.05697 10.6496 2.14524 10.53C2.23351 10.4104 2.35561 10.32 2.49577 10.2705L26.0144 2.04065Z"
@@ -359,25 +395,25 @@
          //    a.click();
          //    document.body.removeChild(a);
          // });
-
+         
          document.getElementById("downloadBtn").addEventListener("click", async () => {
             const video = document.querySelector(".video-area video");
             if (!video) return;
-
+         
             try {
                const response = await fetch(video.src, { mode: 'cors' });
                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
+         
                const blob = await response.blob();
                const url = window.URL.createObjectURL(blob);
-
+         
                const a = document.createElement("a");
                a.href = url;
                a.download = "capi-video.mp4";
                document.body.appendChild(a);
                a.click();
                document.body.removeChild(a);
-
+         
                window.URL.revokeObjectURL(url);
             } catch (error) {
                console.error("Failed to download video:", error);
@@ -386,7 +422,7 @@
                window.open(video.src, "_blank");
             }
          });
-
+         
             document.getElementById("shareBtn").addEventListener("click", async () => {
                 try {
                     await navigator.share({
@@ -406,9 +442,15 @@
                MOMENTS_WITH_FRIENDS: 'MOMENTS_WITH_FRIENDS',
                ANIMATE_ANYTHING: 'ANIMATE_ANYTHING',
                MEMEIFY: 'MEME_COMPOSER',
+               BARBI_DOLL_STYLE: 'BARBIE_DOLL',
+               DRAW_TO_VIDEO: 'DRAW_TO_VIDEO',
+               TEXT_TO_VIDEO: 'TEXT_TO_VIDEO',
+               PEOPLE_IN_SCENE: 'PEOPLE_IN_SCENE',
+               CHANGE_SUBJECT: 'CHANGE_SUBJECT',
+               STYLE_CHANGING: 'STYLE_CHANGING',
                DEFAULT: 'DEFAULT',
             }}
-         
+
          function parseItemsNew(remixItem) {
          
             if (remixItem.record_type === 'draft') {
@@ -489,7 +531,7 @@
          
             const record_id =
                remixItem.id || remixItem.record_id || remixItem.discover_id;
-
+         
             let sourceImages = remixItem.inputs.media_items;
             if (generationStyle === constants.GENERATE_STYLE.TRY_ON) {
                sourceImages = sourceImages.sort((a, b) => {
@@ -528,11 +570,13 @@
          
             let media = remixItem.media;
             let finalResultUri = '';
+            let watermark_url = '';
             const finalMediaItems = media.items.filter(
                (item) => item.type === 'video',
             );
             if (finalMediaItems.length) {
                finalResultUri = finalMediaItems[0].presigned_url;
+               watermark_url = finalMediaItems[0].watermark_url;
             }
             return {
                ...remixItem,
@@ -541,6 +585,7 @@
                sourceImages,
                video: finalResultUri,
                userPrompt: remixItem.inputs?.prompt || '',
+               watermark_url
             };
          }
          
@@ -651,7 +696,7 @@
                mainVideo.autoplay = true;
                mainVideo.loop = true;
                mainVideo.controls = false;
-               mainVideo.src = data.video;
+               mainVideo.src =  data.watermark_url || data.video;
                mainVideo.load();
                mainVideo.play().catch(err => {
                   console.warn('Autoplay failed:', err);
@@ -692,6 +737,24 @@
                         newMediaElements.push(mediaEl);
                   }
                });
+         
+               const backgroundPreview = document.querySelector('.background-preview');
+               // backgroundPreview.innerHTML = ''; // Clear any previous media
+         
+               if (data.sourceImages.length && data.sourceImages[0].type === 'image') {
+                  const bgImage = document.createElement('img');
+                  bgImage.src = data.sourceImages[0].url;
+                  backgroundPreview.prepend(bgImage);
+               } else {
+                  const bgVideo = document.createElement('video');
+                  bgVideo.src = data.sourceImages[0].url;
+                  bgVideo.autoplay = false;
+                  bgVideo.muted = true;
+                  bgVideo.loop = true;
+                  bgVideo.playsInline = false;
+                  bgVideo.setAttribute('webkit-playsinline', 'true');
+                  backgroundPreview.prepend(bgVideo);
+               }
          
                setupSwiper(newMediaElements);
                document.querySelector('.subtitle').innerHTML = `Generated with <strong>${data.generationStyle?.split('_').join(' ')}</strong>`;
